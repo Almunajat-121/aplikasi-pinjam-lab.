@@ -4,14 +4,19 @@ import java.time.LocalDate;
 
 public class Peminjaman {
     private int id;
-    private int userId; // ID pengguna yang meminjam
-    private int barangId; // ID barang yang dipinjam
-    private LocalDate tanggalPinjam; // Menggunakan LocalDate
-    private LocalDate tanggalKembali; // Menggunakan LocalDate
-    private String status; // Contoh: "Diajukan", "Disetujui", "Ditolak", "Dikembalikan"
-    private String catatanAdmin; // Catatan dari admin
+    private int userId;
+    private int barangId;
+    private LocalDate tanggalPinjam;
+    private LocalDate tanggalKembali;
+    private String status;
+    private String catatanAdmin;
 
-    // Konstruktor lengkap
+    // --- Properti Tambahan untuk Menampung Data JOIN dari Database ---
+    private String username; // Username dari tabel users
+    private String namaLengkapUser; // Nama lengkap user dari tabel users
+    private String namaBarangPeminjaman; // Nama barang dari tabel barangs
+    // -----------------------------------------------------------------
+
     public Peminjaman(int id, int userId, int barangId, LocalDate tanggalPinjam, LocalDate tanggalKembali, String status, String catatanAdmin) {
         this.id = id;
         this.userId = userId;
@@ -22,7 +27,6 @@ public class Peminjaman {
         this.catatanAdmin = catatanAdmin;
     }
 
-    // Konstruktor untuk peminjaman baru (ID akan di-generate DB)
     public Peminjaman(int userId, int barangId, LocalDate tanggalPinjam, LocalDate tanggalKembali, String status) {
         this(0, userId, barangId, tanggalPinjam, tanggalKembali, status, null);
     }
@@ -36,16 +40,21 @@ public class Peminjaman {
     public void setBarangId(int barangId) { this.barangId = barangId; }
     public LocalDate getTanggalPinjam() { return tanggalPinjam; }
     public void setTanggalPinjam(LocalDate tanggalPinjam) { this.tanggalPinjam = tanggalPinjam; }
-
-    // --- INI ADALAH METODE getTanggalKembali() YANG BENAR (Hanya ada satu) ---
     public LocalDate getTanggalKembali() { return tanggalKembali; }
     public void setTanggalKembali(LocalDate tanggalKembali) { this.tanggalKembali = tanggalKembali; }
-    // -------------------------------------------------------------------------
-
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public String getCatatanAdmin() { return catatanAdmin; }
     public void setCatatanAdmin(String catatanAdmin) { this.catatanAdmin = catatanAdmin; }
+
+    // --- Getter dan Setter untuk Properti Tambahan (Data JOIN) ---
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public String getNamaLengkapUser() { return namaLengkapUser; }
+    public void setNamaLengkapUser(String namaLengkapUser) { this.namaLengkapUser = namaLengkapUser; }
+    public String getNamaBarangPeminjaman() { return namaBarangPeminjaman; }
+    public void setNamaBarangPeminjaman(String namaBarangPeminjaman) { this.namaBarangPeminjaman = namaBarangPeminjaman; }
+    // -----------------------------------------------------------
 
     @Override
     public String toString() {

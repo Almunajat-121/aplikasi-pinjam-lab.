@@ -1,4 +1,4 @@
-module com.almunajat.labpinjam { // PASTIKAN NAMA MODUL INI HANYA "com.almunajat.labpinjam"
+module com.almunajat.labpinjam {
     // Modul JavaFX yang diperlukan
     requires javafx.controls;
     requires javafx.fxml;
@@ -7,11 +7,6 @@ module com.almunajat.labpinjam { // PASTIKAN NAMA MODUL INI HANYA "com.almunajat
 
     // Modul untuk BootstrapFX
     requires org.kordamp.bootstrapfx.core;
-
-    // Modul untuk Ikonli
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.ikonli.fontawesome5; // Paket ikon FontAwesome 5
-    requires org.kordamp.ikonli.core; // Core Ikonli
 
     // Modul untuk JDBC (koneksi database)
     requires java.sql;
