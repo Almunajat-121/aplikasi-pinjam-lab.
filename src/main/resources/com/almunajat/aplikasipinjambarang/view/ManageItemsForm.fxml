@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.almunajat.aplikasipinjambarang.controller.ManageItemsController">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Manajemen Barang Laboratorium">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="TOP_CENTER" spacing="20.0">
+               <children>
+                  <VBox prefHeight="250.0" prefWidth="250.0" spacing="10.0">
+                     <children>
+                        <Label text="Nama Barang:" />
+                        <TextField fx:id="namaBarangField" promptText="Nama barang" styleClass="form-control" />
+                        <Label text="Deskripsi:" />
+                        <TextArea fx:id="deskripsiArea" prefHeight="70.0" prefWidth="200.0" promptText="Deskripsi barang" styleClass="form-control" wrapText="true" />
+                        <Label text="Jumlah Tersedia:" />
+                        <TextField fx:id="jumlahTersediaField" promptText="Jumlah" styleClass="form-control" />
+                        <Label text="Lokasi:" />
+                        <TextField fx:id="lokasiField" promptText="Lokasi penyimpanan" styleClass="form-control" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" prefHeight="250.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#handleAddBarang" prefWidth="90.0" styleClass="btn,btn-success" text="Tambah" />
+                        <Button mnemonicParsing="false" onAction="#handleUpdateBarang" prefWidth="90.0" styleClass="btn,btn-info" text="Update" />
+                        <Button mnemonicParsing="false" onAction="#handleDeleteBarang" prefWidth="90.0" styleClass="btn,btn-danger" text="Hapus" />
+                        <Button mnemonicParsing="false" onAction="#handleClearForm" prefWidth="90.0" styleClass="btn,btn-secondary" text="Clear" />
+                     </children>
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <TableView fx:id="barangTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="idColumn" prefWidth="40.0" text="ID" />
+                  <TableColumn fx:id="namaBarangColumn" prefWidth="150.0" text="Nama Barang" />
+                  <TableColumn fx:id="deskripsiColumn" prefWidth="200.0" text="Deskripsi" />
+                  <TableColumn fx:id="jumlahTersediaColumn" prefWidth="100.0" text="Jumlah" />
+                  <TableColumn fx:id="lokasiColumn" prefWidth="150.0" text="Lokasi" />
+               </columns>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </TableView>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
