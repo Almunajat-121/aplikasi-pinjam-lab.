@@ -15,6 +15,7 @@ public class Peminjaman {
     private String username;
     private String namaLengkapUser;
     private String namaBarangPeminjaman;
+    private int jumlahBarangTersediaSaatIni; // <--- TAMBAHKAN PROPERTI INI
 
     public Peminjaman(int id, int userId, int barangId, LocalDate tanggalPinjam, LocalDate tanggalKembali, String status, String catatanAdmin) {
         this.id = id;
@@ -30,6 +31,7 @@ public class Peminjaman {
         this(0, userId, barangId, tanggalPinjam, tanggalKembali, status, null);
     }
 
+    // --- Getters and Setters ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getUserId() { return userId; }
@@ -45,13 +47,15 @@ public class Peminjaman {
     public String getCatatanAdmin() { return catatanAdmin; }
     public void setCatatanAdmin(String catatanAdmin) { this.catatanAdmin = catatanAdmin; }
 
-    // Getter dan Setter untuk Properti Tambahan (Data JOIN)
+    // --- Getter dan Setter untuk Properti Tambahan (Data JOIN) ---
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getNamaLengkapUser() { return namaLengkapUser; }
     public void setNamaLengkapUser(String namaLengkapUser) { this.namaLengkapUser = namaLengkapUser; }
     public String getNamaBarangPeminjaman() { return namaBarangPeminjaman; }
     public void setNamaBarangPeminjaman(String namaBarangPeminjaman) { this.namaBarangPeminjaman = namaBarangPeminjaman; }
+    public int getJumlahBarangTersediaSaatIni() { return jumlahBarangTersediaSaatIni; } // <--- TAMBAHKAN GETTER INI
+    public void setJumlahBarangTersediaSaatIni(int jumlahBarangTersediaSaatIni) { this.jumlahBarangTersediaSaatIni = jumlahBarangTersediaSaatIni; } // <--- TAMBAHKAN SETTER INI
 
     @Override
     public String toString() {

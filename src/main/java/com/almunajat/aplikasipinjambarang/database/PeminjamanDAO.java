@@ -51,16 +51,15 @@ public class PeminjamanDAO {
     /**
      * Mendapatkan semua permintaan peminjaman (opsional dengan filter status).
      * Ini bisa digunakan untuk admin (melihat semua) atau mahasiswa (melihat riwayatnya).
-     * @param statusFilter Filter status (misal "Diajukan", "Disetujui", null untuk semua).
+     * @param statusFilter Filter status (misal "Diajukan", "Disetujui", "Dikembalikan", null untuk semua).
      * @return List objek Peminjaman dengan detail User dan Barang.
      */
     public List<Peminjaman> getAllPeminjaman(String statusFilter) {
         List<Peminjaman> peminjamans = new ArrayList<>();
-        // Menggunakan JOIN untuk mendapatkan detail user dan barang
-        String sql = "SELECT p.*, u.username, u.nama_lengkap, b.nama_barang, b.deskripsi " +
-                     "FROM peminjamans p " +
-                     "JOIN users u ON p.user_id = u.id " +
-                     "JOIN barangs b ON p.barang_id = b.id";
+        String sql = "SELECT p.*, u.username, u.nama_lengkap, b.nama_barang, b.deskripsi, b.jumlah_tersedia AS barang_jumlah_tersedia " + // Tambahkan jumlah_tersedia
+                "FROM peminjamans p " +
+                "JOIN users u ON p.user_id = u.id " +
+                "JOIN barangs b ON p.barang_id = b.id";
         if (statusFilter != null && !statusFilter.isEmpty()) {
             sql += " WHERE p.status = ?";
         }
@@ -76,18 +75,19 @@ public class PeminjamanDAO {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Peminjaman p = new Peminjaman(
-                    rs.getInt("id"),
-                    rs.getInt("user_id"),
-                    rs.getInt("barang_id"),
-                    rs.getDate("tanggal_pinjam").toLocalDate(),
-                    rs.getDate("tanggal_kembali") != null ? rs.getDate("tanggal_kembali").toLocalDate() : null,
-                    rs.getString("status"),
-                    rs.getString("catatan_admin")
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("barang_id"),
+                        rs.getDate("tanggal_pinjam").toLocalDate(),
+                        rs.getDate("tanggal_kembali") != null ? rs.getDate("tanggal_kembali").toLocalDate() : null,
+                        rs.getString("status"),
+                        rs.getString("catatan_admin")
                 );
-                // Tambahkan detail tambahan dari JOIN (misal untuk ditampilkan di tabel)
-                p.setUsername(rs.getString("username")); // Asumsi Anda akan menambahkan setter/getter ini di Peminjaman model
-                p.setNamaLengkapUser(rs.getString("nama_lengkap")); // Asumsi
-                p.setNamaBarangPeminjaman(rs.getString("nama_barang")); // Asumsi
+                // Tambahkan detail tambahan dari JOIN
+                p.setUsername(rs.getString("username"));
+                p.setNamaLengkapUser(rs.getString("nama_lengkap"));
+                p.setNamaBarangPeminjaman(rs.getString("nama_barang"));
+                p.setJumlahBarangTersediaSaatIni(rs.getInt("barang_jumlah_tersedia")); // Set jumlah_tersedia
                 peminjamans.add(p);
             }
         } catch (SQLException e) {
@@ -104,10 +104,10 @@ public class PeminjamanDAO {
      */
     public List<Peminjaman> getPeminjamanByUserId(int userId) {
         List<Peminjaman> peminjamans = new ArrayList<>();
-        String sql = "SELECT p.*, b.nama_barang, b.deskripsi " +
-                     "FROM peminjamans p " +
-                     "JOIN barangs b ON p.barang_id = b.id " +
-                     "WHERE p.user_id = ? ORDER BY p.created_at DESC";
+        String sql = "SELECT p.*, b.nama_barang, b.deskripsi, b.jumlah_tersedia AS barang_jumlah_tersedia " + // Tambahkan jumlah_tersedia
+                "FROM peminjamans p " +
+                "JOIN barangs b ON p.barang_id = b.id " +
+                "WHERE p.user_id = ? ORDER BY p.created_at DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -116,15 +116,16 @@ public class PeminjamanDAO {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Peminjaman p = new Peminjaman(
-                    rs.getInt("id"),
-                    rs.getInt("user_id"),
-                    rs.getInt("barang_id"),
-                    rs.getDate("tanggal_pinjam").toLocalDate(),
-                    rs.getDate("tanggal_kembali") != null ? rs.getDate("tanggal_kembali").toLocalDate() : null,
-                    rs.getString("status"),
-                    rs.getString("catatan_admin")
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("barang_id"),
+                        rs.getDate("tanggal_pinjam").toLocalDate(),
+                        rs.getDate("tanggal_kembali") != null ? rs.getDate("tanggal_kembali").toLocalDate() : null,
+                        rs.getString("status"),
+                        rs.getString("catatan_admin")
                 );
-                p.setNamaBarangPeminjaman(rs.getString("nama_barang")); // Asumsi
+                p.setNamaBarangPeminjaman(rs.getString("nama_barang"));
+                p.setJumlahBarangTersediaSaatIni(rs.getInt("barang_jumlah_tersedia")); // Set jumlah_tersedia
                 peminjamans.add(p);
             }
         } catch (SQLException e) {
@@ -140,13 +141,20 @@ public class PeminjamanDAO {
      * @return true jika berhasil, false jika gagal.
      */
     public boolean updatePeminjamanStatus(Peminjaman peminjaman) {
-        String sql = "UPDATE peminjamans SET status = ?, catatan_admin = ? WHERE id = ?";
+        String sql = "UPDATE peminjamans SET status = ?, catatan_admin = ?, tanggal_kembali = ? WHERE id = ?"; // Tambahkan update tanggal_kembali
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, peminjaman.getStatus());
             pstmt.setString(2, peminjaman.getCatatanAdmin());
-            pstmt.setInt(3, peminjaman.getId());
+            // Jika statusnya 'Dikembalikan', set tanggal_kembali ke hari ini
+            if ("Dikembalikan".equalsIgnoreCase(peminjaman.getStatus())) {
+                pstmt.setDate(3, Date.valueOf(LocalDate.now()));
+            } else {
+                // Gunakan tanggal_kembali yang sudah ada di objek peminjaman (yang bisa null untuk status lain)
+                pstmt.setDate(3, peminjaman.getTanggalKembali() != null ? Date.valueOf(peminjaman.getTanggalKembali()) : null);
+            }
+            pstmt.setInt(4, peminjaman.getId());
 
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
@@ -157,5 +165,43 @@ public class PeminjamanDAO {
         return false;
     }
 
-    // Metode lain yang mungkin dibutuhkan (misal deletePeminjaman, getPeminjamanById)
+    /**
+     * Metode baru: Mendapatkan detail peminjaman berdasarkan ID.
+     * @param id ID peminjaman.
+     * @return Objek Peminjaman jika ditemukan, null jika tidak.
+     */
+    public Peminjaman getPeminjamanById(int id) {
+        String sql = "SELECT p.*, u.username, u.nama_lengkap, b.nama_barang, b.deskripsi, b.jumlah_tersedia AS barang_jumlah_tersedia " +
+                "FROM peminjamans p " +
+                "JOIN users u ON p.user_id = u.id " +
+                "JOIN barangs b ON p.barang_id = b.id " +
+                "WHERE p.id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Peminjaman p = new Peminjaman(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getInt("barang_id"),
+                        rs.getDate("tanggal_pinjam").toLocalDate(),
+                        rs.getDate("tanggal_kembali") != null ? rs.getDate("tanggal_kembali").toLocalDate() : null,
+                        rs.getString("status"),
+                        rs.getString("catatan_admin")
+                );
+                p.setUsername(rs.getString("username"));
+                p.setNamaLengkapUser(rs.getString("nama_lengkap"));
+                p.setNamaBarangPeminjaman(rs.getString("nama_barang"));
+                p.setJumlahBarangTersediaSaatIni(rs.getInt("barang_jumlah_tersedia"));
+                return p;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error saat mengambil peminjaman berdasarkan ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
