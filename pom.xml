@@ -3,14 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.almunajat.labpinjam</groupId>
-    <artifactId>lab-peminjaman</artifactId> <version>1.0-SNAPSHOT</version>
-    <name>lab-peminjaman</name> <packaging>jar</packaging>
+    <groupId>com.almunajat</groupId> <artifactId>labpinjamapp</artifactId> <version>1.0-SNAPSHOT</version>
+    <name>LabPinjamApp</name> <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>21</maven.compiler.source> <maven.compiler.target>21</maven.compiler.target> <javafx.version>22</javafx.version> <main.class>com.almunajat.labpinjam.App</main.class> </properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <javafx.version>22</javafx.version>
+        <main.class>com.almunajat.labpinjamapp.App</main.class> </properties>
 
     <dependencies>
         <dependency>
@@ -48,11 +50,13 @@
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-fontawesome5-pack</artifactId>
-            <version>12.3.1</version> </dependency>
+            <version>12.3.1</version>
+        </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-core</artifactId>
-            <version>12.3.1</version> </dependency>
+            <version>12.3.1</version>
+        </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
@@ -85,23 +89,10 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version> <configuration>
-                <mainClass>${main.class}</mainClass>
-            </configuration>
-                <executions>
-                    <execution>
-                        <id>default-cli</id>
-                        <configuration>
-                            <mainClass>${main.class}</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
-                            <noManPages>true</noManPages>
-                            <stripDebug>true</stripDebug>
-                            <noHeaderFiles>true</noHeaderFiles>
-                        </configuration>
-                    </execution>
-                </executions>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
             </plugin>
 
             <plugin>
