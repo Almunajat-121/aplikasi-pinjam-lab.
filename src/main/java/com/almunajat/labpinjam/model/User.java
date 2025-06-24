@@ -37,11 +37,11 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-               "id=" + id +
-               ", username='" + username + '\'' +
-               ", role='" + role + '\'' +
-               ", namaLengkap='" + namaLengkap + '\'' +
-               ", nimNip='" + nimNip + '\'' +
-               '}';
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", namaLengkap='" + namaLengkap + '\'' +
+                ", nimNip='" + nimNip + '\'' +
+                '}';
     }
 }

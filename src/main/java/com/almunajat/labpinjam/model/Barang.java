@@ -33,9 +33,9 @@ public class Barang {
     @Override
     public String toString() {
         return "Barang{" +
-               "id=" + id +
-               ", namaBarang='" + namaBarang + '\'' +
-               ", jumlahTersedia=" + jumlahTersedia +
-               '}';
+                "id=" + id +
+                ", namaBarang='" + namaBarang + '\'' +
+                ", jumlahTersedia=" + jumlahTersedia +
+                '}';
     }
 }

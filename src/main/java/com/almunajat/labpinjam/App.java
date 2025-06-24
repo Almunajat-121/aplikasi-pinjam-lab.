@@ -6,17 +6,25 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import org.kordamp.bootstrapfx.BootstrapFX; // Import BootstrapFX (hanya satu kali)
+import org.kordamp.ikonli.fontawesome5.FontAwesome5; // Import FontAwesome5
+import org.kordamp.ikonli.javafx.IkonResolver; // Import IkonResolver
+
 import com.almunajat.labpinjam.database.DatabaseConnection;
 import javafx.scene.control.Alert;
-import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 import java.sql.Connection;
 
 public class App extends Application {
 
-    @Override
+    @Override // Anotasi @Override hanya satu kali
     public void start(Stage primaryStage) {
+        // --- Inisialisasi Ikonli Font Awesome ---
+        // Ini memastikan Ikonli mendaftarkan paket ikon FontAwesome5
+        IkonResolver.getInstance().addResolver(new org.kordamp.ikonli.fontawesome5.FontAwesome5.Resolver());
+        // ----------------------------------------
+
         // --- Bagian Pengujian Koneksi Database ---
         Connection connection = null;
         try {
