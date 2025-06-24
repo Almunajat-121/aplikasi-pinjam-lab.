@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.StringConverter; // <-- TAMBAHKAN IMPORT INI
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,7 +47,7 @@ public class BorrowRequestController {
     private ObservableList<Barang> availableBarangList;
 
     // Untuk menyimpan user yang sedang login (sementara, nanti dari session)
-    // HARUS DIGANTI dengan meneruskan objek user dari LoginController
+    // TODO: Ini harus diisi dari sesi user yang sedang login
     private User currentUser = new User(1, "mahasiswa", "mahasiswa123", "Mahasiswa", "Budi Santoso", "1211001");
 
     @FXML
@@ -70,6 +71,21 @@ public class BorrowRequestController {
                         barangComboBox.getSelectionModel().select(newValue);
                     }
                 });
+
+        // --- PENTING: Konfigurasi ComboBox untuk menampilkan hanya nama barang ---
+        barangComboBox.setConverter(new StringConverter<Barang>() {
+            @Override
+            public String toString(Barang barang) {
+                return barang != null ? barang.getNamaBarang() : "";
+            }
+
+            @Override
+            public Barang fromString(String string) {
+                // Ini tidak digunakan untuk ComboBox yang hanya untuk display
+                return null;
+            }
+        });
+        // ---------------------------------------------------------------------
 
         // Set tanggal pinjam default hari ini
         tanggalPinjamPicker.setValue(LocalDate.now());
@@ -171,6 +187,7 @@ public class BorrowRequestController {
             errorMessage += "Tanggal kembali tidak boleh sebelum tanggal pinjam!\n";
         }
 
+
         if (errorMessage.isEmpty()) {
             return true;
         } else {
@@ -179,9 +196,6 @@ public class BorrowRequestController {
         }
     }
 
-    /**
-     * Menampilkan dialog informasi (tidak mengembalikan nilai).
-     */
     private void showAlertInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -190,9 +204,6 @@ public class BorrowRequestController {
         alert.showAndWait();
     }
 
-    /**
-     * Menampilkan dialog error (tidak mengembalikan nilai).
-     */
     private void showAlertError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -201,9 +212,6 @@ public class BorrowRequestController {
         alert.showAndWait();
     }
 
-    /**
-     * Menampilkan dialog konfirmasi (mengembalikan Optional<ButtonType>).
-     */
     private Optional<ButtonType> showAlertConfirm(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);

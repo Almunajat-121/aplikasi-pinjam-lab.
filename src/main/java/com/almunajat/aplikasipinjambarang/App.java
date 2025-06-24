@@ -5,13 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import com.almunajat.aplikasipinjambarang.database.DatabaseConnection;
 import javafx.scene.control.Alert;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
-import java.net.URL; // Tambahkan import ini
+import java.net.URL;
 import java.sql.Connection;
 
 public class App extends Application {
@@ -29,27 +30,41 @@ public class App extends Application {
                 return;
             }
 
-            // --- PERHATIKAN PERUBAHAN PADA BAGIAN INI ---
-            // Mencoba mendapatkan resource FXML
+            // --- Bagian Memuat UI dari FXML ---
             String fxmlPath = "/com/almunajat/aplikasipinjambarang/view/LoginForm.fxml";
-            URL fxmlUrl = getClass().getResource(fxmlPath);
+            URL resourceUrl = getClass().getResource(fxmlPath);
 
-            if (fxmlUrl == null) {
+            if (resourceUrl == null) {
                 System.err.println("ERROR: FXML file tidak ditemukan di classpath: " + fxmlPath);
                 showAlert(primaryStage, Alert.AlertType.ERROR, "Kesalahan Aplikasi", "File tampilan utama (LoginForm.fxml) tidak ditemukan. Periksa jalur.");
-                return; // Hentikan aplikasi jika FXML tidak ditemukan
+                return;
             }
 
-            FXMLLoader loader = new FXMLLoader(fxmlUrl); // Gunakan URL yang sudah divalidasi
+            FXMLLoader loader = new FXMLLoader(resourceUrl);
             Parent root = loader.load();
-            // --- AKHIR PERUBAHAN ---
 
             Scene scene = new Scene(root);
             scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
 
+            // --- TAMBAHKAN KODE UNTUK IKON DI SINI ---
+            try {
+                // Pastikan path ke ikonmu benar di src/main/resources/icons/app_icon.png
+                Image icon = new Image(getClass().getResourceAsStream("/icons/app_icon.png"));
+                primaryStage.getIcons().add(icon);
+            } catch (Exception e) {
+                System.err.println("Gagal memuat ikon aplikasi: " + e.getMessage());
+                // Tidak fatal, aplikasi tetap jalan tanpa ikon
+            }
+            // ----------------------------------------
+
             primaryStage.setTitle("Aplikasi Manajemen Pinjam Barang Laboratorium");
             primaryStage.setScene(scene);
             primaryStage.show();
+
+            // Listener untuk menutup koneksi saat aplikasi ditutup
+            primaryStage.setOnCloseRequest(event -> {
+                DatabaseConnection.closeConnection();
+            });
 
         } catch (IOException e) {
             System.err.println("Kesalahan memuat tampilan FXML: " + e.getMessage());

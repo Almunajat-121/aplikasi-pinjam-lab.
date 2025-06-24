@@ -37,8 +37,10 @@
                   <TableColumn fx:id="tanggalPinjamColumn" prefWidth="100.0" text="Tgl Pinjam" />
                   <TableColumn fx:id="tanggalKembaliColumn" prefWidth="100.0" text="Tgl Kembali" />
                   <TableColumn fx:id="statusColumn" prefWidth="80.0" text="Status" />
-                  <TableColumn fx:id="catatanAdminColumn" prefWidth="150.0" text="Catatan Admin" />
-               </columns>
+                  <TableColumn fx:id="catatanAdminColumn" prefWidth="200.0" text="Catatan Admin" /> </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -59,7 +61,8 @@
                      <children>
                         <Button mnemonicParsing="false" onAction="#handleApprove" prefWidth="90.0" styleClass="btn,btn-success" text="Setujui" />
                         <Button mnemonicParsing="false" onAction="#handleReject" prefWidth="90.0" styleClass="btn,btn-danger" text="Tolak" />
-                        <Button mnemonicParsing="false" onAction="#handleMarkReturned" prefWidth="90.0" styleClass="btn,btn-secondary" text="Dikembalikan" /> </children>
+                        <Button mnemonicParsing="false" onAction="#handleMarkReturned" prefWidth="90.0" styleClass="btn,btn-secondary" text="Dikembalikan" />
+                     </children>
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
