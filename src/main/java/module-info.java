@@ -1,4 +1,4 @@
-module com.almunajat.labpinjam {
+module com.almunajat.aplikasipinjambarang { // PASTIKAN NAMA MODUL INI SESUAI
     // Modul JavaFX yang diperlukan
     requires javafx.controls;
     requires javafx.fxml;
@@ -13,15 +13,16 @@ module com.almunajat.labpinjam {
     requires mysql.connector.j; // Nama modul untuk MySQL Connector/J
 
     // Untuk iText PDF, tidak perlu 'requires' di sini karena itu JAR non-modular yang diatur oleh Maven
+    requires itextpdf; // Tambahkan ini jika iTextPDF digunakan
 
     // Paket-paket dalam modul ini yang perlu dibuka untuk FXML/Runtime JavaFX
     // Pastikan nama paketnya benar-benar sesuai dengan folder Java kamu
-    opens com.almunajat.labpinjam to javafx.fxml; // Untuk kelas App.java
-    opens com.almunajat.labpinjam.controller to javafx.fxml; // Untuk kelas LoginController.java
+    opens com.almunajat.aplikasipinjambarang to javafx.fxml; // Untuk kelas App.java
+    opens com.almunajat.aplikasipinjambarang.controller to javafx.fxml; // Untuk kelas LoginController.java
 
     // Paket-paket dalam modul ini yang perlu diekspor untuk diakses modul lain
-    exports com.almunajat.labpinjam;
-    exports com.almunajat.labpinjam.controller;
-    exports com.almunajat.labpinjam.model;
-    exports com.almunajat.labpinjam.database;
+    exports com.almunajat.aplikasipinjambarang;
+    exports com.almunajat.aplikasipinjambarang.controller;
+    exports com.almunajat.aplikasipinjambarang.model;
+    exports com.almunajat.aplikasipinjambarang.database;
 }
