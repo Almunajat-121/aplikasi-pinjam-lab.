@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
+import java.net.URL; // Tambahkan import ini
 import java.util.Optional;
 import javafx.scene.control.ButtonType;
 
@@ -26,7 +27,7 @@ public class AdminDashboardController {
     @FXML
     public void initialize() {
         javafx.application.Platform.runLater(() -> {
-            loadContent("/com/almunajat/aplikasipinjambarang/view/ManageItemsForm.fxml"); // Default admin: Manajemen Barang
+            loadContent("/com/almunajat/aplikasipinjambarang/view/ManageItemsForm.fxml");
         });
     }
 
@@ -42,8 +43,7 @@ public class AdminDashboardController {
 
     @FXML
     private void handleApproveLoans(ActionEvent event) {
-        // Ini adalah metode yang dipanggil saat tombol "Persetujuan Peminjaman" diklik
-        loadContent("/com/almunajat/aplikasipinjambarang/view/ApprovalForm.fxml"); // Pastikan PATH INI BENAR
+        loadContent("/com/almunajat/aplikasipinjambarang/view/ApprovalForm.fxml");
     }
 
     @FXML
@@ -80,15 +80,33 @@ public class AdminDashboardController {
         }
     }
 
+    /**
+     * Metode pembantu untuk memuat konten FXML ke bagian tengah BorderPane.
+     * Ditambahkan logging lebih detail.
+     */
     private void loadContent(String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            URL resourceUrl = getClass().getResource(fxmlPath);
+            if (resourceUrl == null) {
+                System.err.println("ERROR FXML Not Found: Resource not found for path: " + fxmlPath);
+                showAlertError("Error Pemuatan Tampilan", "File tampilan tidak ditemukan: " + fxmlPath + ". Periksa jalur file.");
+                return;
+            }
+            System.out.println("Loading FXML from URL: " + resourceUrl); // Tambahkan log ini
+
+            FXMLLoader loader = new FXMLLoader(resourceUrl);
             Parent content = loader.load();
             mainBorderPane.setCenter(content);
+            System.out.println("FXML " + fxmlPath + " berhasil dimuat."); // Log sukses
+
         } catch (IOException e) {
-            System.err.println("Gagal memuat konten: " + fxmlPath + " - " + e.getMessage());
+            System.err.println("Gagal memuat konten dari " + fxmlPath + ": " + e.getMessage());
             e.printStackTrace();
-            showAlertError("Error Loading", "Gagal memuat tampilan fitur.");
+            showAlertError("Error Pemuatan Tampilan", "Gagal memuat tampilan fitur dari " + fxmlPath + ". Detail: " + e.getLocalizedMessage());
+        } catch (Exception e) { // Tangkap juga exception umum
+            System.err.println("Unexpected error while loading FXML from " + fxmlPath + ": " + e.getMessage());
+            e.printStackTrace();
+            showAlertError("Error Pemuatan Tampilan", "Terjadi kesalahan tidak terduga saat memuat tampilan dari " + fxmlPath + ". Detail: " + e.getLocalizedMessage());
         }
     }
 

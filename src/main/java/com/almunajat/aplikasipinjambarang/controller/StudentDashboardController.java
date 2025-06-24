@@ -13,31 +13,27 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
+import java.net.URL; // Tambahkan import ini
 import java.util.Optional;
 import javafx.scene.control.ButtonType;
 
 public class StudentDashboardController {
 
     @FXML
-    private BorderPane mainBorderPane; // Pastikan ini di-inject dari FXML
+    private BorderPane mainBorderPane;
 
-    private User currentUser; // Untuk menyimpan user yang sedang login
+    private User currentUser;
 
     @FXML
     public void initialize() {
-        // initialize() dipanggil sebelum semua @FXML elemen selesai di-inject.
-        // Tunda pemanggilan loadContent() menggunakan Platform.runLater
         javafx.application.Platform.runLater(() -> {
-            loadContent("/com/almunajat/aplikasipinjambarang/view/BorrowRequestForm.fxml"); // Default mahasiswa: Form Peminjaman Barang
+            loadContent("/com/almunajat/aplikasipinjambarang/view/BorrowRequestForm.fxml");
         });
     }
 
-    // Setter untuk User yang sedang login (dipanggil dari LoginController)
     public void setCurrentUser(User user) {
         this.currentUser = user;
-        // Opsional: tampilkan nama user di dashboard atau log
         System.out.println("Mahasiswa login: " + user.getNamaLengkap());
-        // Catatan: Jika ingin meneruskan currentUser ke BorrowRequestController, lakukan di loadContent
     }
 
     @FXML
@@ -45,17 +41,13 @@ public class StudentDashboardController {
         loadContent("/com/almunajat/aplikasipinjambarang/view/BorrowRequestForm.fxml");
     }
 
-    /**
-     * Menangani aksi tombol "Riwayat Peminjaman Saya".
-     * Memuat LoanHistoryForm dan meneruskan info user.
-     */
     @FXML
     private void handleViewMyLoans(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/almunajat/aplikasipinjambarang/view/LoanHistoryForm.fxml"));
             Parent content = loader.load();
-            LoanHistoryController controller = loader.getController(); // Dapatkan instance controller
-            controller.setCurrentUser(currentUser); // Teruskan user yang login
+            LoanHistoryController controller = loader.getController();
+            controller.setCurrentUser(currentUser);
             mainBorderPane.setCenter(content);
         } catch (IOException e) {
             System.err.println("Gagal memuat halaman Riwayat Peminjaman (Mahasiswa): " + e.getMessage());
@@ -83,15 +75,33 @@ public class StudentDashboardController {
         }
     }
 
+    /**
+     * Metode pembantu untuk memuat konten FXML ke bagian tengah BorderPane.
+     * Ditambahkan logging lebih detail.
+     */
     private void loadContent(String fxmlPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            URL resourceUrl = getClass().getResource(fxmlPath);
+            if (resourceUrl == null) {
+                System.err.println("ERROR FXML Not Found: Resource not found for path: " + fxmlPath);
+                showAlertError("Error Pemuatan Tampilan", "File tampilan tidak ditemukan: " + fxmlPath + ". Periksa jalur file.");
+                return;
+            }
+            System.out.println("Loading FXML from URL: " + resourceUrl); // Tambahkan log ini
+
+            FXMLLoader loader = new FXMLLoader(resourceUrl);
             Parent content = loader.load();
             mainBorderPane.setCenter(content);
+            System.out.println("FXML " + fxmlPath + " berhasil dimuat."); // Log sukses
+
         } catch (IOException e) {
-            System.err.println("Gagal memuat konten: " + fxmlPath + " - " + e.getMessage());
+            System.err.println("Gagal memuat konten dari " + fxmlPath + ": " + e.getMessage());
             e.printStackTrace();
-            showAlertError("Error Loading", "Gagal memuat tampilan fitur.");
+            showAlertError("Error Pemuatan Tampilan", "Gagal memuat tampilan fitur dari " + fxmlPath + ". Detail: " + e.getLocalizedMessage());
+        } catch (Exception e) { // Tangkap juga exception umum
+            System.err.println("Unexpected error while loading FXML from " + fxmlPath + ": " + e.getMessage());
+            e.printStackTrace();
+            showAlertError("Error Pemuatan Tampilan", "Terjadi kesalahan tidak terduga saat memuat tampilan dari " + fxmlPath + ". Detail: " + e.getLocalizedMessage());
         }
     }
 

@@ -31,10 +31,10 @@ public class ApprovalController {
     private TableColumn<Peminjaman, String> tanggalKembaliColumn;
     @FXML
     private TableColumn<Peminjaman, String> statusColumn;
-    @FXML // <-- BARIS INI YANG HILANG
-    private TableColumn<Peminjaman, String> catatanAdminColumn; // <-- BARIS INI YANG HILANG
     @FXML
-    private TextArea catatanAdminArea;
+    private TableColumn<Peminjaman, String> catatanAdminColumn;
+    @FXML // <-- BARIS INI YANG HILANG
+    private TextArea catatanAdminArea; // <-- PASTIKAN DEKLARASI INI ADA
 
     private PeminjamanDAO peminjamanDAO;
     private ObservableList<Peminjaman> pendingLoansList;
@@ -52,7 +52,7 @@ public class ApprovalController {
         tanggalPinjamColumn.setCellValueFactory(new PropertyValueFactory<>("tanggalPinjam"));
         tanggalKembaliColumn.setCellValueFactory(new PropertyValueFactory<>("tanggalKembali"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        catatanAdminColumn.setCellValueFactory(new PropertyValueFactory<>("catatanAdmin")); // Baris ini yang butuh deklarasi di atas
+        catatanAdminColumn.setCellValueFactory(new PropertyValueFactory<>("catatanAdmin"));
 
         loadPendingLoans();
 

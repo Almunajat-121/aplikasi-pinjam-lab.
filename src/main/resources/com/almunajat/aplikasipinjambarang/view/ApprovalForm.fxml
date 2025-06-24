@@ -37,7 +37,7 @@
                   <TableColumn fx:id="tanggalPinjamColumn" prefWidth="100.0" text="Tgl Pinjam" />
                   <TableColumn fx:id="tanggalKembaliColumn" prefWidth="100.0" text="Tgl Kembali" />
                   <TableColumn fx:id="statusColumn" prefWidth="80.0" text="Status" />
-               </columns>
+                  <TableColumn fx:id="catatanAdminColumn" prefWidth="150.0" text="Catatan Admin" /> </columns>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
