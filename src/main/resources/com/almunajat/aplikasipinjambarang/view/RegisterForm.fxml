@@ -10,33 +10,36 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.almunajat.labpinjam.controller.RegisterController">
-   <children>
-      <VBox alignment="CENTER" layoutX="50.0" layoutY="30.0" prefHeight="390.0" prefWidth="400.0" spacing="10.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
-         <children>
-            <Label text="Registrasi Akun Baru">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label prefHeight="18.0" prefWidth="366.0" text="Nama Lengkap:" />
-            <TextField fx:id="namaLengkapField" promptText="Masukkan nama lengkap" styleClass="form-control" />
-            <Label prefHeight="18.0" prefWidth="387.0" text="NIM / NIP:" />
-            <TextField fx:id="nimNipField" promptText="Masukkan NIM/NIP" styleClass="form-control" />
-            <Label prefHeight="18.0" prefWidth="790.0" text="Username:" />
-            <TextField fx:id="usernameField" promptText="Masukkan username" styleClass="form-control" />
-            <Label prefHeight="18.0" prefWidth="556.0" text="Password:" />
-            <PasswordField fx:id="passwordField" promptText="Masukkan password" styleClass="form-control" />
-            <Label prefHeight="18.0" prefWidth="765.0" text="Ulangi Password:" />
-            <PasswordField fx:id="confirmPasswordField" promptText="Ulangi password" styleClass="form-control" />
-            <Label prefWidth="102.0" text="Daftar Sebagai:" />
-            <ComboBox fx:id="roleComboBox" prefWidth="200.0" promptText="Pilih peran" styleClass="form-control" />
-            <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButton" prefHeight="26.0" prefWidth="155.0" styleClass="btn,btn-success" text="Daftar Sekarang" />
-            <Button fx:id="backToLoginButton" mnemonicParsing="false" onAction="#handleBackToLogin" styleClass="btn,btn-link" text="Sudah punya akun? Login" />
-         </children>
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
-      </VBox>
-   </children>
+
+<AnchorPane prefHeight="450.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.almunajat.aplikasipinjambarang.controller.RegisterController"> <children>
+   <VBox alignment="TOP_CENTER" layoutX="50.0" layoutY="30.0" prefHeight="390.0" prefWidth="400.0" spacing="10.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
+      <children>
+         <Label text="Registrasi Akun Baru">
+            <font>
+               <Font name="System Bold" size="24.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="20.0" top="20.0" />
+            </VBox.margin>
+         </Label>
+         <Label text="Nama Lengkap:" />
+         <TextField fx:id="namaLengkapField" promptText="Masukkan nama lengkap" styleClass="form-control" />
+         <Label text="NIM / NIP:" />
+         <TextField fx:id="nimNipField" promptText="Masukkan NIM/NIP" styleClass="form-control" />
+         <Label text="Username:" />
+         <TextField fx:id="usernameField" promptText="Masukkan username" styleClass="form-control" />
+         <Label text="Password:" />
+         <PasswordField fx:id="passwordField" promptText="Masukkan password" styleClass="form-control" />
+         <Label text="Ulangi Password:" />
+         <PasswordField fx:id="confirmPasswordField" promptText="Ulangi password" styleClass="form-control" />
+         <Label text="Daftar Sebagai:" />
+         <ComboBox fx:id="roleComboBox" prefWidth="200.0" promptText="Pilih peran" styleClass="form-control" />
+         <Button fx:id="registerButton" mnemonicParsing="false" onAction="#handleRegisterButton" text="Daftar Sekarang" styleClass="btn,btn-success" />
+         <Button fx:id="backToLoginButton" mnemonicParsing="false" onAction="#handleBackToLogin" text="Sudah punya akun? Login" styleClass="btn,btn-link" />
+      </children>
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
+   </VBox>
+</children>
 </AnchorPane>

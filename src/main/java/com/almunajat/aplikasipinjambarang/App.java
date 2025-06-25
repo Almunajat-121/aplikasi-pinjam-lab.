@@ -77,7 +77,7 @@ public class App extends Application {
         launch(args);
     }
 
-    private void showAlert(Stage owner, Alert.AlertType alertType, String title, String message) {
+    private void showAlert(Stage owner, Alert.AlertType alertType, String title, String message) { // <-- KOREKSI DI SINI
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
